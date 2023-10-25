@@ -20,6 +20,16 @@ private:
     string branch;
 };
 
+class EngineeringStudent : public Student {
+public:
+    EngineeringStudent(string name, string branch, string major) : Student(name, branch), major(major) {}
+    void display() const override {
+        cout << "Name: " << getName() << ", Branch: " << getBranch() << ", Major: " << major << endl;
+    }
+private:
+    string major;
+};
+
 class Room {
 public:
     Room(int roomNumber) : roomNumber(roomNumber) {
@@ -149,24 +159,31 @@ int main() {
     Hostel collegeHostel;
     while (true) {
         int choice;
-        cout << "\nHostel Accommodation Management System"<<endl;
-        cout << "1. Allocate Room"<<endl;
-        cout << "2. Remove Student"<<endl;
-        cout << "3. Display Students"<<endl;
-        cout << "4. Total Available Beds"<<endl;
-        cout << "5. Exit"<<endl;
+        cout << "\nHostel Accommodation Management System" << endl;
+        cout << "1. Allocate Room" << endl;
+        cout << "2. Remove Student" << endl;
+        cout << "3. Display Students" << endl;
+        cout << "4. Total Available Beds" << endl;
+        cout << "5. Exit" << endl;
         cout << "Enter your choice: ";
         cin >> choice;
 
         switch (choice) {
             case 1: {
-                string name, branch;
+                string name, branch, major;
                 cout << "Enter student name: ";
                 cin >> name;
                 cout << "Enter student branch: ";
                 cin >> branch;
-                Student* student = new Student(name, branch);
-                collegeHostel.allocateRoom(student);
+                if (branch == "Engineering") {
+                    cout << "Enter student major: ";
+                    cin >> major;
+                    Student* student = new EngineeringStudent(name, branch, major);
+                    collegeHostel.allocateRoom(student);
+                } else {
+                    Student* student = new Student(name, branch);
+                    collegeHostel.allocateRoom(student);
+                }
                 break;
             }
             case 2: {
@@ -179,7 +196,7 @@ int main() {
                 break;
             }
             case 3:
-                cout << "Students in the hostel:"<<endl;
+                cout << "Students in the hostel:" << endl;
                 collegeHostel.displayStudents();
                 break;
             case 4:
@@ -188,7 +205,7 @@ int main() {
             case 5:
                 return 0;
             default:
-                cout << "Invalid choice. Please try again."<<endl;
+                cout << "Invalid choice. Please try again." << endl;
                 break;
         }
     }
